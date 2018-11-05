@@ -2,7 +2,7 @@
 /// <reference path="./form.d.ts" />
 /// <reference path="./event.d.ts" />
 
-interface FieldProps {
+export interface FieldProps {
     /** 当前item的表单核心 */
     form: FormCore,
     /** 事件监听原子方法 */
@@ -13,7 +13,7 @@ interface FieldProps {
     removeListener: () => void,
 }
 
-interface ItemCore {
+export interface ItemCore {
     /** 当前item的表单核心 */
     form: FormCore,
     /** 事件监听原子方法 */
@@ -67,6 +67,8 @@ interface ItemCore {
     consistValidate: () => void
 }
 
-interface ItemCore_Static {
+export interface ItemCore_Static {
     new (fieldProps: FieldProps): ItemCore
 }
+
+export default ItemCore;

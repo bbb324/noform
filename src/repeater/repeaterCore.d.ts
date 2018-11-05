@@ -5,7 +5,7 @@
 /// <reference path="../core/error.d.ts" />
 
 
-interface AsyncHandlerResult {
+export interface AsyncHandlerResult {
     /** 决定是否渲染 */
     success: Boolean,
     /** 决定当前元素数据 */
@@ -14,7 +14,7 @@ interface AsyncHandlerResult {
     values: Array<Any>
 }
 
-interface Option {
+export interface Option {
     /** 值 */
     value?: Array<Any>,
     /** 状态 */
@@ -25,7 +25,7 @@ interface Option {
     asyncHandler?: Map<string, () => AsyncHandlerResult>,
 }
 
-interface RepeaterCore {
+export interface RepeaterCore {
     /** formCore list */
     formList: Array<FormCore>,
     /** 状态 */
@@ -75,6 +75,6 @@ interface RepeaterCore {
     updateValue: (value: Array<any>, event: String, cb: (core: FormCore) => FormCore) => void
 }
 
-interface RepeaterCore_Static {
+export interface RepeaterCore_Static {
     new (options: Option): RepeaterCore
 }

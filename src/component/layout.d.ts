@@ -1,5 +1,5 @@
 // label + control = 24
-interface Layout {
+export interface Layout {
     label: Number,
     control: Number,
 }

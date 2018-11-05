@@ -3,7 +3,7 @@
 /// <reference path="./event.d.ts" />
 /// <reference path="./error.d.ts" />
 
-interface FormConfig {
+export interface FormConfig {
     validateConfig?: any,
     values?: Map<String, any>,
     status?: Map<String, Status>,
@@ -15,7 +15,7 @@ interface FormConfig {
 }
 
 
-interface FormCore {
+export interface FormCore {
     /** onChange函数，当字段变更时触发 */
     onChange: (firekeys: Array<string>, values: Object, ctx: FormCore) => void,
     /** 子项Map, 包含FormItem/Item/If */
@@ -106,6 +106,6 @@ interface FormCore {
     setValidateConfig: (config: any) => void
 }
 
-interface FormCore_Static {
+export interface FormCore_Static {
     new (formConfig: FormConfig): FormCore
 }

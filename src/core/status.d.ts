@@ -1,4 +1,4 @@
-enum Status {
+export enum Status {
     preview = "preview",
     edit = "edit",
     disabled = "disabled",

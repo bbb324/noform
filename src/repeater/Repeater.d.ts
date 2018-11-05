@@ -4,7 +4,7 @@
 /// <reference path="../core/status.d.ts" />
 /// <reference path="./repeaterCore.d.ts" />
 
-interface FormStyleConfig {
+export interface FormStyleConfig {
     name: String,
     label: String,
     prefix: String,
@@ -16,7 +16,7 @@ interface FormStyleConfig {
     className: String,
 }
 
-interface RepeaterTextMap {
+export interface RepeaterTextMap {
     /** 添加按钮文案 */
     addText: String
     /** 更新按钮文案 */
@@ -41,7 +41,7 @@ interface RepeaterTextMap {
     deleteConfirmText: String
 }
 
-interface RepeaterProps {
+export interface RepeaterProps {
     /** 是否inline模式 */
     inline: Boolean,  
     /** 是否multiple模式 */
