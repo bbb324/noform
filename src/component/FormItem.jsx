@@ -31,6 +31,7 @@ class BaseFormItem extends React.Component {
         onFocus: PropTypes.func,
         render: PropTypes.func,
         inset: PropTypes.bool,
+        listenKeys: PropTypes.array,
     }
 
     static defaultProps = {
@@ -38,6 +39,7 @@ class BaseFormItem extends React.Component {
         children: null,
         onBlur: noop,
         onFocus: noop,
+        listenKeys: []
     }
 
     constructor(props) {
@@ -316,10 +318,24 @@ class BaseFormItem extends React.Component {
         return predictForm;
     }
 
+    hitListenKeys = (key) => {
+        const { listenKeys, render } = this.props;        
+        if (render) {
+            if (listenKeys.length === 0) {
+                return true;
+            } else {
+                return listenKeys.indexOf(key) !== -1;
+            }
+        } else {
+            return this.core.name === name;
+        }
+    }
+
     update = (type, name, value, silent = false) => {
         // value, props, error, status
+        const hitListen = this.hitListenKeys(name);
         const canUpdate = this.didMount &&
-            (this.props.render || this.core.name === name) && !silent;
+            hitListen && !silent;
         if (canUpdate) {
             switch (type) {
             case 'status':

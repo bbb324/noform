@@ -8,50 +8,54 @@
 ---
 
 ````js
-import Form, { FormItem, Item, If } from '../src';
+import Form, { FormItem, Item, If, FormCore } from '../src';
+import repeater  from '../src/repeater';
+import * as Antd from 'antd';
+import wrapper from '../src/wrapper/antd';
+import dialogWrapper from '../src/dialog/antd';
+// import '../src/repeater/index.scss';
+// import "antd/dist/antd.css";
+import "./repeater.scss";
+
+const { Modal, Button, Input, Checkbox, Radio, Switch }  = wrapper(Antd);
+const Dialog = dialogWrapper(Antd)
+const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
+
 import AsyncValidator from 'async-validator';
 import '../src/index.scss'
 
-function Input(props){
-    let { value, status, error, ...othersProps } = props
-    if(value === null || value === undefined){
-        value = ''
-    }
-    if(status === 'preview'){
-        return <span>{value}</span>
-    }
-    return <input type="text" {...othersProps} value={value}/>
-}
-function Select(props){
-    let showName = ''
-    const { dataSource = [], status, error, ...othersProps } = props
-    const value = props.value || ''
-    const children = dataSource.map((item, idx) => {
-        return <option key={idx} value={item.value}>{item.label}</option>
-    })
-    children.unshift(<option key={-1} value="">请选择</option>)
-    if(status === 'preview'){
-        return <span>{showName || ''}</span>
-    }
-    return <select {...othersProps} value={value}>{ children }</select>
-}
 const defaultValue = {
     // age: 15,
     // user: {
     //     username: 'lily',
     // },
+    hw1: [{ hscode: '' }],
+    hw222222: [{ hscode: '' }]
 };
 
 let children = [
     (() => {
-    let formcore
-    return <Form onMount={core => {
-            window.fc = formcore = core
-        }} layout={{label: 5, control: 19}} full value={defaultValue}>
+    const core = new FormCore({
+        validateConfig: {
+            username: {type: "string", required: true},
+            age: {type: "string", required: true},
+        },
+        autoValidate: true,
+        onChange: (keys, values) => {
+            if (keys.indexOf('username') !== -1) {
+                core.validateItem('age');
+            }
+
+            if (keys.indexOf('age') !== -1) {
+                core.validateItem('username');
+            }
+        }
+    });
+    return <Form core={core} layout={{label: 5, control: 19}} full value={defaultValue}>
         <h3>嵌套if</h3>
         <div className="demo-form">
-            {/* <Item name="age"><Input /></Item> */}
-            {/* <Item name="user">
+            {/* <Item name="age"><Input /></Item>
+            <Item name="user">
                 <Form>
                     <Item name="username"><Input /></Item>
                 </Form>
@@ -73,26 +77,64 @@ let children = [
                 </Item>
             </If> */}
             
-            <FormItem label="username" name="username"><Input /></FormItem>
-            {/* <FormItem label="age" name="age"><Input /></FormItem>                 */}
+            {/* <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>                 */}
+
+            <FormItem label="student" name="student">
+                <InlineRepeater locale="zh" addPosition="bottom" multiple itemAlign="left">            
+                    <FormItem label="hs1" name="quantity">
+                        <Input />
+                    </FormItem>
+                </InlineRepeater>
+            </FormItem>
+
+            <FormItem label="teacher" name="teacher">
+                <InlineRepeater locale="zh" addPosition="bottom" multiple itemAlign="left">            
+                    <FormItem label="hs1222" name="quantity">
+                        <Input />
+                    </FormItem>
+                </InlineRepeater>
+            </FormItem>
+
+            {/* <FormItem name="user" label="user">
+                <Form>
+                    <FormItem name="quantity" label="quantity">
+                        <Input />
+                    </FormItem>
+                    <FormItem name="action1" label="action1">
+                        <Input />
+                    </FormItem>
+                </Form>
+            </FormItem>
+
+            <FormItem name="student" label="student">
+                <Form>
+                    <FormItem name="quantity" label="quantity">
+                        <Input />
+                    </FormItem>
+                    <FormItem name="action2" label="action2">
+                        <Input />
+                    </FormItem>
+                </Form>
+            </FormItem> */}
 
             {/* <FormItem label="">
                 <div>
                     <div>1. username为bobby时，触发第一层if</div>
                     <div>2. username为bobby, age为23时，触发嵌套if</div>
                 </div>
-            </FormItem> */}
+            </FormItem>
 
-            {/* <FormItem label="" style={{ margin: '12px 0' }} name="wrapperForm">
+            <FormItem label="" style={{ margin: '12px 0' }} name="wrapperForm">
                 <Form layout={{label: 5, control: 19}} full>
                     <FormItem label="username" name="username"><Input /></FormItem>
                 </Form>
-            </FormItem> */}
-            {/* <FormItem label="" name="deep">
+            </FormItem>
+            <FormItem label="" name="deep">
                 <Input />
-            </FormItem> */}
+            </FormItem>
 
-            {/* <FormItem label="" style={{ margin: '12px 0' }} name="wrapperIf">
+            <FormItem label="" style={{ margin: '12px 0' }} name="wrapperIf">
                 <If when={(values, { globalStatus }) => {
                     console.log('8****', values, '******8');
                     return values.deep === 'abcd';
@@ -101,20 +143,20 @@ let children = [
                         <div>deep works!</div>
                     </FormItem>
                 </If>
-            </FormItem> */}
+            </FormItem>
 
             <If when={(values, { globalStatus }) => {
                 return values.username === 'bobby';
             }}>
-                {/* <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
+                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
                     <div>
                         hello bobby!
                         <FormItem label="" name="deep">
                             <Input />
                         </FormItem>
                     </div>
-                </FormItem> */}
-                {/* <If when={(values, { globalStatus }) => {
+                </FormItem>
+                <If when={(values, { globalStatus }) => {
                     return values.age == 23;
                 }}>
                     <FormItem label="" >
@@ -125,23 +167,23 @@ let children = [
                             <div>xxxx!!!</div>
                         </If>
                     </FormItem>
-                </If> */}
+                </If>
 
-                {/* <If when={(values, { globalStatus }) => {
+                <If when={(values, { globalStatus }) => {
                     return values.deep == 'abcd';
                 }}>
                     <FormItem label="" >
                         <div>deep works!</div>
                     </FormItem>
-                </If> */}
-                {/* <FormItem label="" style={{ margin: '12px 0' }} name="wrapper"> */}
-                    {/* <div> */}
-                        {/* hello bobby! */}
+                </If>
+                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
+                    <div>
+                        hello bobby!
                         <FormItem label="" name="deep"><Input /></FormItem>
                         <If when={(values, { globalStatus }) => {
                                 return values.deep == 'abcd';
                             }}>
-                            {/* <FormItem label="" name="deepForm">                        
+                            <FormItem label="" name="deepForm">                        
                                 <Form layout={{label: 5, control: 19}} full>
                                     <FormItem label="nif" name="nif"><Input /></FormItem>
                                     <FormItem label="dif" name="dif">
@@ -154,14 +196,14 @@ let children = [
                                         </If>
                                     </FormItem>
                                 </Form>
-                            </FormItem> */}
+                            </FormItem>
 
                             <FormItem label="whois" name="whois"><Input /></FormItem>
                         </If>
-                    {/* </div> */}
-                {/* </FormItem> */}
+                    </div>
+                </FormItem>
 
-                {/* <If when={(values, { globalStatus }) => {
+                <If when={(values, { globalStatus }) => {
                     return values.age == 23;
                 }}>
                     <FormItem label="" >
@@ -175,8 +217,8 @@ let children = [
                     <FormItem label="" >
                         <div>deep works!</div>
                     </FormItem>
-                </If> */}
-            </If>
+                </If>
+            </If> */}
             <button onClick={() => console.log(formcore.getValue())}> console value </button>
             </div>
         <br/><br/>

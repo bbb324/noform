@@ -11,6 +11,7 @@ class If extends Component {
         children: PropTypes.any,
         style: PropTypes.object,
         className: PropTypes.string,
+        listenKeys: PropTypes.Array,
         name: PropTypes.any,
         Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
@@ -21,6 +22,7 @@ class If extends Component {
         style: {},
         className: '',
         Com: 'span',
+        listenKeys: [],
     };
     constructor(props) {
         super(props);
@@ -42,11 +44,22 @@ class If extends Component {
         this.didMount = false;
         this.core.removeListener(ANY_CHANGE, this.update);
     }
-    update = (type) => {
-        if (this.didMount && (type === 'value' || type === 'status')) {
+    update = (type, name) => {
+        const hit = this.hitListenKeys(name);
+        if (this.didMount && (type === 'value' || type === 'status') && hit) {
             this.forceUpdate();
         }
     }
+
+    hitListenKeys = (key) => {
+        const { listenKeys } = this.props;
+        if (listenKeys.length === 0) {
+            return true;
+        } else {
+            return listenKeys.indexOf(key) !== -1;
+        }
+    }
+
     render() {
         if (this.didMount && this.core.status === 'hidden') {
             return null;

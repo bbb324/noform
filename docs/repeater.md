@@ -383,12 +383,12 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem suffix="USD" label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
     <FormItem label="locale" name="locale" defaultValue="en"><RadioGroup options={[
         { label: 'en', value: 'en' },
         { label: 'zh', value: 'zh' }
     ]} /></FormItem>
-    {/* <FormItem name="deepselect">
+    <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
@@ -404,7 +404,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
          <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
        </InlineRepeater>      
-    </FormItem> */}
+    </FormItem>
     
     <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig} dialogConfig={dialogConfig}>
@@ -417,7 +417,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </TableRepeater>
     </Item>
 
-    {/* <FormItem label="inlineRepeat" name="inlineRepeat">
+    <FormItem label="inlineRepeat" name="inlineRepeat">
         <InlineRepeater formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem required label="税号" name="taxpayerNumber"><Input /></FormItem>
@@ -506,14 +506,14 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
+    <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater >
             <FormItem defaultMinWidth={false} label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
             <FormItem defaultMinWidth={false} label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
-    {/* <FormItem name="rulesx">
+    <FormItem name="rulesx" status="preview">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
             <FormItem defaultMinWidth={false} label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
             <FormItem defaultMinWidth={false} label="isRadio" name="isRadio"><Radio>选中</Radio></FormItem>
@@ -522,7 +522,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem prefix="满" suffix="元" status="preview" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
 
     {/* <FormItem name="fuzz">

@@ -118,7 +118,12 @@ export default function bind(type, source) {
                         innerValElement = customRender;
                     } else if (React.isValidElement(childElement)) {
                         const validItemStatus = isValidStatus(conf.status);
-                        const globalStatus = (focusMode && status !== 'preview') ? status : 'preview';
+                        let globalStatus = status;
+                        if (focusMode) { // 焦点模式下，默认为edit，外界状态不为edit时需要同步
+                            globalStatus = status !== 'edit' ? status : 'edit';
+                        } else {
+                            globalStatus = 'preview';
+                        }
                         const itemStatus = validItemStatus ? conf.status : globalStatus;
 
                         innerValElement = React.cloneElement(childElement, { status: itemStatus });
