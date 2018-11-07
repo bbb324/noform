@@ -16,6 +16,7 @@ class Form {
             initialized,
             autoValidate,
             disabledSyncChildForm,
+            initValues,
             exts,
         } = option || {};
 
@@ -26,10 +27,11 @@ class Form {
         this.autoValidate = autoValidate || false;
         this.exts = exts || {};
 
+        this.initValues = initValues;
         this.globalStatus = globalStatus || 'edit';
 
         // 基础属性
-        this.value = values || value || {};
+        this.value = values || value || initValues || {};
         this.status = isObject(status) ? status : {}; // 避免jsx传入单值status
         this.props = {};
         this.error = {};
@@ -289,18 +291,23 @@ class Form {
 
     // 重置value
     reset(keys) {
-        const emptyValue = {};
-        let resetKeys = [];
-        if (Array.isArray(keys)) {
-            resetKeys = keys;
+        if (this.initValues) {
+            debugger;
+            this.setValue(this.initValues);
         } else {
-            resetKeys = Object.keys(this.value);
-        }
-        resetKeys.forEach((key) => {
-            emptyValue[key] = null;
-        });
+            const emptyValue = {};
+            let resetKeys = [];
+            if (Array.isArray(keys)) {
+                resetKeys = keys;
+            } else {
+                resetKeys = Object.keys(this.value);
+            }
+            resetKeys.forEach((key) => {
+                emptyValue[key] = null;
+            });
 
-        this.setValue(emptyValue);
+            this.setValue(emptyValue);
+        }
     }
 
     // 设置多字段

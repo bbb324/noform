@@ -23,6 +23,32 @@ describe('core/form basic function', () => {
         expect(valuesCore.getValue('x')).toEqual(2);
     });
 
+    it('constructor initValues', () => {
+        const values = { x: 1 };
+        const valuesCore = new FormCore({ initValues: values });
+        expect(valuesCore.getValues()).toEqual(values);
+        expect(valuesCore.getValues()).toEqual(values);
+        expect(valuesCore.getItemValue('x')).toEqual(values.x);
+        expect(valuesCore.getValue('x')).toEqual(values.x);
+        valuesCore.setValue('x', 2);
+        expect(valuesCore.getValues()).toEqual({ x: 2 });
+        expect(valuesCore.getValue('x')).toEqual(2);
+    });
+
+    it('initValues and reset', () => {
+        const values = { x: 1, y: null };
+        const valuesCore = new FormCore({ initValues: values });
+        valuesCore.setValues({
+            x: 123,
+            y: 456
+        });
+        expect(valuesCore.getItemValue('x')).toEqual(123);
+        expect(valuesCore.getItemValue('y')).toEqual(456);
+        valuesCore.reset();
+        expect(valuesCore.getItemValue('x')).toEqual(1);
+        expect(valuesCore.getItemValue('y')).toEqual(null);
+    });
+
     it('constructor status', () => {
         const status = { x: 'preview' };
         const statusCore = new FormCore({ status });

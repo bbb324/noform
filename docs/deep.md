@@ -33,9 +33,22 @@ const defaultValue = {
     hw222222: [{ hscode: '' }]
 };
 
+const values = { x: 1 };
+const valuesCore = new FormCore({ initValues: values });
+valuesCore.setValues({
+    x: 123,
+    y: 456
+});
+console.log(valuesCore.getValues());
+valuesCore.reset();
+console.log(valuesCore.getValues());
+
 let children = [
     (() => {
     const core = new FormCore({
+        initValues: {
+            username: '123'
+        },
         validateConfig: {
             username: {type: "string", required: true},
             age: {type: "string", required: true},
@@ -51,6 +64,7 @@ let children = [
             }
         }
     });
+    window.core = core;
     return <Form core={core} layout={{label: 5, control: 19}} full value={defaultValue}>
         <h3>嵌套if</h3>
         <div className="demo-form">
@@ -77,10 +91,10 @@ let children = [
                 </Item>
             </If> */}
             
-            {/* <FormItem label="username" name="username"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>                 */}
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>                
 
-            <FormItem label="student" name="student">
+            {/* <FormItem label="student" name="student">
                 <InlineRepeater locale="zh" addPosition="bottom" multiple itemAlign="left">            
                     <FormItem label="hs1" name="quantity">
                         <Input />
@@ -94,7 +108,7 @@ let children = [
                         <Input />
                     </FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
 
             {/* <FormItem name="user" label="user">
                 <Form>
