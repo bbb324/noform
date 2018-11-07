@@ -31,7 +31,7 @@ class Form {
         this.globalStatus = globalStatus || 'edit';
 
         // 基础属性
-        this.value = values || value || initValues || {};
+        this.value = Object.assign({}, (values || value || initValues || {}));
         this.status = isObject(status) ? status : {}; // 避免jsx传入单值status
         this.props = {};
         this.error = {};
@@ -292,7 +292,6 @@ class Form {
     // 重置value
     reset(keys) {
         if (this.initValues) {
-            debugger;
             this.setValue(this.initValues);
         } else {
             const emptyValue = {};
