@@ -400,6 +400,7 @@ class BaseFormItem extends React.Component {
         // 以下组件的渲染不与formItem公用，避免重复渲染(label, top, suffix, prefix, help, required, full)
         // error比较特殊, 需要考虑自定义errorRender
         const sectionValue = { form: this.form, ...itemProps, core: this.core };
+        delete sectionValue.className;
         const labelElement = <Section type="props" field="label" {...sectionValue} pure />;
         const prefixElement = <Section type="props" field="prefix" className={`${formItemPrefix}-item-content-prefix`} {...sectionValue} />;
         const suffixElement = <Section type="props" field="suffix" className={`${formItemPrefix}-item-content-suffix`} {...sectionValue} />;
@@ -408,9 +409,9 @@ class BaseFormItem extends React.Component {
         const errElement = <Section type="error" className={`${formItemPrefix}-item-error`} {...sectionValue} errorRender={errorRender} />;
 
         // 避免重复渲染
-        const wrapperCls = this.getWrapperClassName();
-        const labelCls = this.getLabelClassName();
-        const fullCls = this.getFullClassName();
+        const wrapperCls = this.getWrapperClassName(); // no-form-item 
+        const labelCls = this.getLabelClassName(); // no-form-item-label
+        const fullCls = this.getFullClassName(); // no-form-item-content
 
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
