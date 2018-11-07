@@ -175,6 +175,8 @@ class App extends React.Component {
                 //     ]
                 // }
                 drawerName: { type: 'string', required: true },
+                t1: { type: 'string', required: true },
+                t2: { type: 'string', required: true },
             }
         };
 
@@ -190,11 +192,12 @@ class App extends React.Component {
             <Item name="repeat">
                 <InlineRepeater formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-                    <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-                    <FormItem label="子公司" name="branchName"><Input /></FormItem>
-                    <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-                    <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-                    <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+                    <FormItem label="税号" multiple>
+                        <div>
+                            <FormItem name="t1"><Input /></FormItem>
+                            <FormItem name="t2"><Input /></FormItem>
+                        </div>
+                    </FormItem>
                 </InlineRepeater>
             </Item>
             {/* <FormItem label="company" name="company">

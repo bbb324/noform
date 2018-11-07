@@ -23,16 +23,24 @@ const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
 import './antd.scss';
 
+const formFragment = (core) => (<Form core={core} >
+    <FormItem label="time" name="time"><DatePicker /></FormItem>
+    <FormItem label="timeRange" name="timeRange"><DatePicker.RangePicker /></FormItem>
+</Form>);
+
 const popup = () => {
     const core = new FormCore();
     Dialog.show({
         title: '弹窗表单',
-        content: <Form core={core} >
-            <FormItem label="username" name="username"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>
-        </Form>
+        content: formFragment(core),
+        onOk: (values, hide) => {
+            console.log('ok', values);
+            hide();
+        }
     });
 };
+
+window.popup = popup;
 
 let children = [
 // (() => {
@@ -186,6 +194,10 @@ let children = [
                     <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
                 </div>
             }} /> */}
+            <Form >
+                <FormItem label="time" name="time"><DatePicker /></FormItem>
+                <FormItem label="timeRange" name="timeRange"><DatePicker.RangePicker /></FormItem>
+            </Form>
         </div>
         <br/><br/>
         <button onClick={() => console.log(formcore.getValue())}> console value </button>

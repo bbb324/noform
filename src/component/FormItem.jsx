@@ -319,7 +319,7 @@ class BaseFormItem extends React.Component {
     }
 
     hitListenKeys = (key) => {
-        const { listenKeys, render } = this.props;        
+        const { listenKeys, render } = this.props;
         if (render) {
             if (listenKeys.length === 0) {
                 return true;
@@ -327,7 +327,7 @@ class BaseFormItem extends React.Component {
                 return listenKeys.indexOf(key) !== -1;
             }
         } else {
-            return this.core.name === name;
+            return this.core.name === key;
         }
     }
 

@@ -54,8 +54,9 @@ class DialogForm {
         const { content } = this.options;
 
         let formInstance = null;
+        const footer = this.renderFooter(Button);
         if (typeof content === 'function') {
-            formInstance = content();
+            formInstance = content(footer);
         } else {
             formInstance = content;
         }
@@ -75,10 +76,12 @@ class DialogForm {
 
         this.dialogCore = propCore;
 
-        const footer = this.renderFooter(Button);
         const mixFooterContent = [].concat(children, footer);
         const onMountProps = {};
-        if (formInstance.displayName === 'NoForm') {
+
+        // 只允许本身是NoForm以及方法返回的是NoForm
+        if (formInstance.displayName === 'NoForm' ||
+            (formInstance.type && formInstance.type.displayName === 'NoForm')) {
             onMountProps.onMount = hijackCore;
         }
         const modalContent = React.cloneElement(formInstance, {
