@@ -36,7 +36,7 @@ describe('core/form basic function', () => {
     });
 
     it('initValues and reset', () => {
-        const values = { x: 1, y: null };
+        const values = { x: 1 };
         const valuesCore = new FormCore({ initValues: values });
         valuesCore.setValues({
             x: 123,

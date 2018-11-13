@@ -72,6 +72,7 @@ More than 190 case.
 ### How to contribute
 
 1. clone this repo
+2. npm install -g nobuilder
 2. npm install
 3. npm run start
 4. pull request

@@ -291,22 +291,26 @@ class Form {
 
     // 重置value
     reset(keys) {
-        if (this.initValues) {
-            this.setValue(this.initValues);
+        let emptyValue = {};
+        let resetKeys = [];
+        if (Array.isArray(keys) && !this.initValues) {
+            resetKeys = keys;
         } else {
-            const emptyValue = {};
-            let resetKeys = [];
-            if (Array.isArray(keys)) {
-                resetKeys = keys;
-            } else {
-                resetKeys = Object.keys(this.value);
-            }
-            resetKeys.forEach((key) => {
-                emptyValue[key] = null;
-            });
-
-            this.setValue(emptyValue);
+            resetKeys = Object.keys(this.value);
         }
+
+        resetKeys.forEach((key) => {
+            emptyValue[key] = null;
+        });
+
+        if (this.initValues) {
+            emptyValue = {
+                ...emptyValue,
+                ...this.initValues,
+            }
+        }
+
+        this.setValue(emptyValue);
     }
 
     // 设置多字段
