@@ -149,14 +149,19 @@ let children = [
                 <FormItem required label="hidden" name="hidden"><Input /></FormItem>
             </If> */}
             {/* <FormItem label="username" name="username"><Input /></FormItem> */}
-            <FormItem label="user" name="user">
+            {/* <FormItem label="user" name="user">
                 
                     <Form layout={false}>
                         <FormItem label="age" name="age"><Input /></FormItem>
                         <FormItem label="email" name="email"><Input /></FormItem>
                     </Form>
                 
-            </FormItem>
+            </FormItem> */}
+            <If when={({ username }, ctx) => {
+                return ctx.globalStatus === 'preview';
+            }}>
+                <div>123</div>
+            </If>
             
             {/* <If when={values => values.username === 'bobby'}>
                 <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">

@@ -468,7 +468,8 @@ class Form {
 
             // JSX 属性 > core默认值 > 默认属性(globalStatus) > 空值
             mrOption.jsx_status = status || func_status;
-            mrOption.value = isInvalidVal(value) ? (this.value[name] || null) : value;
+            const initialValue = isInvalidVal(this.value[name]) ? null : this.value[name];
+            mrOption.value = isInvalidVal(value) ? initialValue : value;
             this.value[mrOption.name] = mrOption.value;
             // eslint-disable-next-line
             this.status[mrOption.name] = mrOption.status = status || this.status[name] || this.globalStatus;
