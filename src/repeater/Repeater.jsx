@@ -5,6 +5,9 @@ import ActionButton from './ActionButton';
 import RowContext from '../context/repeaterRow';
 import { isValidStatus } from '../util/is';
 
+const isIf = item => (item && item.type && item.type.displayName === 'If');
+const getIfChild = item => (item && item.props && item.props.children) ? React.Children.only(item.props.children) : null;
+
 export default function bind(type, source) {
     const { Input } = source;
 
@@ -13,9 +16,40 @@ export default function bind(type, source) {
     const addSuffix = isInline ? 'Inline' : '';
 
     class Repeater extends React.Component {
-        getItemsConfig = () => {
-            const { children } = this.props;
-            const itemsConfig = React.Children.map(children, child => ({
+        getItemsConfig = (rowIndex) => {
+            const { children, repeaterCore } = this.props;
+            const { formList = [] } = repeaterCore || {};
+            const itemsConfig = React.Children.map(children, (childItem, index) => {
+                // 非常脏的一段逻辑，而且inlineReater这种非受控组件不适用，需要花时间去重新梳理Repeater的通信方式和渲染方式
+                if (isIf(childItem)) {
+                    let ifResult = null;
+                    const { when, children: ifChild } = childItem.props || {};
+                    const missonList = rowIndex !== undefined ? [formList[rowIndex] || {}] : formList || [];
+                    if (typeof when === 'function') {
+                        let canShow = false;
+                        missonList.forEach((mItem, mIndex) => {
+                            if (mItem.getValues) {
+                                const mResult = when(mItem.getValues(), mIndex);
+                                if (mResult && !canShow) canShow = true;
+                            }
+                        });
+
+                        if (canShow) {
+                            ifResult = React.Children.only(ifChild);
+                        } else {
+                            const { props: ifChildProps } = ifChild || {};
+                            const { children, ...otherIfProps } = ifChildProps || {};
+                            ifResult = <div {...otherIfProps} />;
+                        }
+                    }
+
+                    return ifResult;
+                } else {
+                    return childItem;
+                }
+            })
+            .filter(item => item !== null)
+            .map(child => ({
                 name: child.props.name,
                 label: child.props.label,
                 prefix: child.props.prefix,
@@ -25,7 +59,9 @@ export default function bind(type, source) {
                 style: child.props.style,
                 status: child.props.status,
                 className: child.props.className,
-            })).filter(item => (item.name || item.multiple || item.renderCell));
+            })).
+            filter(item => (item.name || item.multiple || item.renderCell));
+
             return itemsConfig;
         }
 
@@ -59,8 +95,7 @@ export default function bind(type, source) {
             return searchEle;
         }
 
-        renderRowList = () => {
-            const itemsConfig = this.getItemsConfig();
+        renderRowList = () => {            
             const {
                 multiple = false,
                 hasDelete = true, hasUpdate = true,
@@ -97,11 +132,16 @@ export default function bind(type, source) {
                 const childMap = {};
                 const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
                 childrenRefArr.forEach((childitem) => {
-                    const { label, name } = childitem.props;
-                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, ...cleanLayout });
+                    let mrChild = childitem; 
+                    if (isIf(childitem)) {
+                        mrChild = getIfChild(childitem);
+                    }
+                    const { label, name } = mrChild.props;
+                    childMap[`${label}${name}`] = React.cloneElement(mrChild, { label: undefined, ...cleanLayout });
                 });
 
                 // 遍历渲染数据
+                const itemsConfig = this.getItemsConfig(index);
                 listItems = itemsConfig.map((conf) => {
                     const cls = conf.className || '';
                     const style = conf.style || {};

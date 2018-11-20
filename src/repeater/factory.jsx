@@ -370,7 +370,8 @@ export default function CreateRepeater(bindSource, type, source) {
                         return;
                     }
 
-                    const success = await this.doAdd(core);
+                    const success = await this.doAdd(core.getValues());
+                    // const success = await this.doAdd(core);
                     if (success) {
                         hide();
                     }

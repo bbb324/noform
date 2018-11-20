@@ -506,14 +506,38 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+    <FormItem defaultMinWidth={false} label="out" name="out"><Input style={{ width: '100px' }} /></FormItem>
+    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater >
             <FormItem defaultMinWidth={false} label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
-            <FormItem defaultMinWidth={false} label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+             <If when={(values, ctx) => {
+                 return values.username === 'abc';
+             }}>
+                <FormItem defaultMinWidth={false} label="age" name="age"><Input style={{ width: '100px' }} /></FormItem>
+             </If>
+        </InlineRepeater>
+    </FormItem> */}
+
+    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+        <InlineRepeater multiple>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            {/* <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+             */}
+             <If when={(values, ctx) => {
+                 return values.username === 'abc';
+             }}>
+                <FormItem label="age" name="age"><Input /></FormItem>
+             </If>
+
+             <FormItem label="list" name="list">
+                <TableRepeater >
+                    <FormItem label="iii" name="iii"><Input /></FormItem>
+                </TableRepeater >
+             </FormItem>
         </InlineRepeater>
     </FormItem>
 
-    <FormItem name="rulesx" status="preview">
+    {/* <FormItem name="rulesx" status="preview">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
             <FormItem defaultMinWidth={false} label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
             <FormItem defaultMinWidth={false} label="isRadio" name="isRadio"><Radio>选中</Radio></FormItem>
@@ -522,7 +546,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem prefix="满" suffix="元" status="preview" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
 
     {/* <FormItem name="fuzz">

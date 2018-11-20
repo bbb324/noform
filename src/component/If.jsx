@@ -11,7 +11,7 @@ class If extends Component {
         children: PropTypes.any,
         style: PropTypes.object,
         className: PropTypes.string,
-        listenKeys: PropTypes.Array,
+        // listenKeys: PropTypes.Array,
         name: PropTypes.any,
         Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }

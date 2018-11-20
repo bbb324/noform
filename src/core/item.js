@@ -214,11 +214,14 @@ class Item {
     consistStatus(value, silent = false) {
         const {
             form, func_status, when, jsx_status,
+            calulateWhen,
         } = this;
 
         let syncSetting = true;
         let statusResult = form.globalStatus;
         const escape = false;
+        const whenResult = when ? this.calulateWhen(value, when) : false;
+        const canConsistWhen = when === null || whenResult;
 
         if (jsx_status) { // 可能为promise
             if (isFunction(func_status)) {
@@ -226,7 +229,8 @@ class Item {
                 if (isPromise(statusResult)) {
                     syncSetting = false;
                     statusResult.then((dynamicResult) => {
-                        if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
+                        if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && canConsistWhen) {
+                        // if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
                             this.set('status', dynamicResult, escape, silent);
                         }
                     });
@@ -235,9 +239,10 @@ class Item {
                 statusResult = jsx_status;
             }
 
-            if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
+            // if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
+            if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && canConsistWhen) {
                 this.set('status', statusResult, escape, silent);
-            }
+            }            
         }
 
         return statusResult;
