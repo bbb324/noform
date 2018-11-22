@@ -90,7 +90,6 @@ export default function CreateRepeater(bindSource, type, source) {
             const { filter, asyncHandler, formConfig } = this.props;
             const manualEvent = this.genManualEvent();
 
-            debugger;
             if (deepEqual(this.props, nextProps) && !manualEvent.type) {
                 return;
             }
