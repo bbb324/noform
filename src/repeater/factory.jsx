@@ -90,6 +90,11 @@ export default function CreateRepeater(bindSource, type, source) {
             const { filter, asyncHandler, formConfig } = this.props;
             const manualEvent = this.genManualEvent();
 
+            debugger;
+            if (deepEqual(this.props, nextProps) && !manualEvent.type) {
+                return;
+            }
+
             if (!deepEqual(asyncHandler, nextProps.asyncHandler)) {
                 this.repeaterCore.asyncHandler = nextProps.asyncHandler;
             }
@@ -267,8 +272,9 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         sync = (opts) => {
-            this.manualEvent = opts || {};
-            this.onChange(this.repeaterCore.getValues(), opts);
+            this.manualEvent = opts || {};            
+            const values = this.repeaterCore.getValues();
+            this.onChange(values, opts);
         }
 
         doSave = async (id) => {

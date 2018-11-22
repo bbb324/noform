@@ -518,11 +518,31 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+    <If when={(values) => {
+        return !!values.out;
+    }}>
+        <FormItem name="rulesx">
+            <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
+                <FormItem defaultMinWidth={false} label="step1" name="step1"><Input style={{ width: '100px' }} /></FormItem>
+                <FormItem defaultMinWidth={false} label="step2" name="step2"><Input style={{ width: '100px' }} /></FormItem>
+                <FormItem defaultMinWidth={false} label="step3" name="step3"><Input style={{ width: '100px' }} /></FormItem>
+            </InlineRepeater>
+        </FormItem>
+    </If>
+
+    {/* <FormItem name="rulesy">
+        <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
+            <FormItem defaultMinWidth={false} label="step1" name="step1"><Input style={{ width: '100px' }} /></FormItem>
+            <FormItem defaultMinWidth={false} label="step2" name="step2"><Input style={{ width: '100px' }} /></FormItem>
+            <FormItem defaultMinWidth={false} label="step3" name="step3"><Input style={{ width: '100px' }} /></FormItem>
+        </InlineRepeater>
+    </FormItem> */}
+
+    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater multiple>
             <FormItem label="username" name="username"><Input /></FormItem>
-            {/* <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
-             */}
+            <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+            
              <If when={(values, ctx) => {
                  return values.username === 'abc';
              }}>
@@ -535,7 +555,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
                 </TableRepeater >
              </FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem name="rulesx" status="preview">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
