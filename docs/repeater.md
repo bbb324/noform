@@ -518,7 +518,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <If when={(values) => {
+    {/* <If when={(values) => {
         return !!values.out;
     }}>
         <FormItem name="rulesx">
@@ -528,7 +528,22 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
                 <FormItem defaultMinWidth={false} label="step3" name="step3"><Input style={{ width: '100px' }} /></FormItem>
             </InlineRepeater>
         </FormItem>
-    </If>
+    </If> */}
+
+    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+        <InlineRepeater multiple>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+             <FormItem label="价格" multiple>
+                <div>
+                    <FormItem name="price"><Input/></FormItem>
+                    <If when={(values, ctx) => !!values.isOpen}>
+                        <FormItem label="age" name="age"><Input /></FormItem>
+                    </If>
+                </div>
+            </FormItem>
+        </InlineRepeater>
+    </FormItem>
 
     {/* <FormItem name="rulesy">
         <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>

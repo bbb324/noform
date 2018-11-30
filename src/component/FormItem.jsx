@@ -333,6 +333,7 @@ class BaseFormItem extends React.Component {
 
     update = (type, name, value, silent = false) => {
         // value, props, error, status
+        const { listenError = false, listenProps = false } = this.props;
         const hitListen = this.hitListenKeys(name);
         const canUpdate = this.didMount &&
             hitListen && !silent;
@@ -344,12 +345,20 @@ class BaseFormItem extends React.Component {
                 if (this.wrapperElement.current) {
                     this.wrapperElement.current.className = this.getWrapperClassName();
                 }
+
+                if (listenError) {
+                    this.forceUpdate();
+                }
                 break;
             case 'props':
                 if (this.fullElement.current) {
                     this.fullElement.current.className = this.getFullClassName();
                     this.labelElement.current.className = this.getLabelClassName();
-                }                
+                }     
+                
+                if (listenProps) {
+                    this.forceUpdate();
+                }
                 break;
             case 'value':
                 if (this.props.render && canUpdate) {
