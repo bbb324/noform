@@ -6,8 +6,10 @@ import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED } from '../static';
 import FormContext from '../context/form';
 import IfContext from '../context/if';
 import ItemContext from '../context/item';
+import DialogContext from '../context/dialogForm';
 
 const noop = () => {};
+const noopEle = () => null;
 const Component = React.PureComponent;
 class Form extends Component {
     static propTypes = {
@@ -22,6 +24,8 @@ class Form extends Component {
         children: PropTypes.any,
         className: PropTypes.any,
         direction: PropTypes.string,
+        dialogFooter: PropTypes.func,
+        onDialogMount: PropTypes.func,
         core: PropTypes.instanceOf(FormCore),
         validateConfig: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
         value: PropTypes.object,
@@ -37,6 +41,8 @@ class Form extends Component {
         onFocus: noop,
         onBlur: noop,
         onMount: noop,
+        onDialogMount: noop,
+        dialogFooter: noopEle,
         colon: true,
         map: v => v,
         core: null,
@@ -89,6 +95,7 @@ class Form extends Component {
 
         this.didMount = true;
         this.props.onMount(this.core); // 返回core
+        this.props.onDialogMount(this.core);
         this.core.emit(INITIALIZED, this.core);
 
         // 校验规则
@@ -175,6 +182,12 @@ class Form extends Component {
         return result;
     }
 
+    renderFooter = () => {
+        const { layout } = this.props;
+        const { dialogFooter } = this.props;
+        return dialogFooter({ layout });
+    }
+
     render() {
         // 默认布局为垂直布局
         const {
@@ -189,7 +202,10 @@ class Form extends Component {
         return (
             <IfContext.Provider value={null}>
                 <FormContext.Provider value={contextValue}>
-                    <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`} {...leapNestProps}>{children}</Com>
+                    <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`} {...leapNestProps}>
+                        {children}
+                        {this.renderFooter()}
+                    </Com>
                 </FormContext.Provider>
             </IfContext.Provider>
         );
@@ -200,7 +216,14 @@ class Form extends Component {
 const ConnectForm = props => (<ItemContext.Consumer>
     {(upperItem) => {
         const { item } = upperItem || {};
-        return (<Form {...props} item={item} />);
+        return (
+            <DialogContext.Consumer>
+                {(dialogProps) => {
+                    const rootFormDialogProps = item ? {} : dialogProps || {};
+                    return (<Form {...props} item={item} {...rootFormDialogProps} />);
+                }}
+            </DialogContext.Consumer>
+        );
     }}
 </ItemContext.Consumer>);
 

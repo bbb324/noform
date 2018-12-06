@@ -33,6 +33,7 @@ const popup = () => {
     Dialog.show({
         title: '弹窗表单',
         content: formFragment(core),
+        footerAlign: 'label',
         onOk: (values, hide) => {
             console.log('ok', values);
             hide();
@@ -43,35 +44,35 @@ const popup = () => {
 window.popup = popup;
 
 let children = [
-// (() => {
-//     const ic = new FormCore();
-//     window.ic = ic;
-//     return <Form core={ic} layout={{label: 5, control: 19}} full>
-//         <FormItem label="username" name="username"><Input /></FormItem>
-//         <If when={(values) => {
-//             const { username } = values || {};
-//             return username === 'a';
-//         }}>
-//             <FormItem label="nested" name="nested">
-//                 <Form>
-//                     <FormItem label="n1" name="n1">
-//                         <Input />
-//                     </FormItem>
-//                     <FormItem label="n2" name="n2">
-//                         <Input />
-//                     </FormItem>
-//                 </Form>
-//             </FormItem>
-//         </If>
-//     </Form>
-// })(), 
-// (() => {
-//     let formcore
-//     return <div>
-//         <h3>DialogForm</h3>
-//         <button onClick={popup}>popup</button>
-//     </div>
-// })(),
+(() => {
+    const ic = new FormCore();
+    window.ic = ic;
+    return <Form core={ic} layout={{label: 5, control: 19}} full>
+        <FormItem label="username" name="username"><Input /></FormItem>
+        <If when={(values) => {
+            const { username } = values || {};
+            return username === 'a';
+        }}>
+            <FormItem label="nested" name="nested">
+                <Form>
+                    <FormItem label="n1" name="n1">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="n2" name="n2">
+                        <Input />
+                    </FormItem>
+                </Form>
+            </FormItem>
+        </If>
+    </Form>
+})(), 
+(() => {
+    let formcore
+    return <div>
+        <h3>DialogForm</h3>
+        <button onClick={popup}>popup</button>
+    </div>
+})(),
 (() => {
     const options = [
         { label: 'zero', value: 0 },
