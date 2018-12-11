@@ -65,12 +65,29 @@ export default function bind(type, source) {
             return itemsConfig;
         }
 
-        hasOperBtn = () => {
-            const {
-                multiple = false,
-                hasDelete = true,
-                hasUpdate = true,
-            } = this.props;
+        hasOperBtn = () => {            
+            let failedDeleteCount = 0;
+            let failedUpdateCount = 0;
+            const { multiple = false, repeaterCore,
+                hasUpdate: propUpdate, hasDelete: propDelete } = this.props;
+            const { formList } = repeaterCore;
+            const rowLength = Array.isArray(formList) ? formList.length : 0;
+            const rowList = formList.map((core, index) => {
+                const values = core.getValues();
+                const { id } = core;
+
+                const localHasDelete = this.decideHasBtn('hasDelete', values, index);
+                const localHasUpdate = this.decideHasBtn('hasUpdate', values, index);
+
+                if (!localHasDelete) failedDeleteCount += 1;
+                if (!localHasUpdate) failedUpdateCount += 1;
+            });
+
+            const defaultDelete = typeof propDelete === 'boolean' ? propDelete :  true;
+            const defaultUpdate = typeof propUpdate === 'boolean' ? propUpdate :  true;
+            
+            const hasDelete = rowLength ? (failedDeleteCount < rowLength) : defaultDelete;
+            const hasUpdate = rowLength ? (failedUpdateCount < rowLength) : defaultUpdate;
 
             const isInlineMode = !multiple && !isTable;
             const isSyncmode = !isTable && multiple;
@@ -95,10 +112,21 @@ export default function bind(type, source) {
             return searchEle;
         }
 
+        decideHasBtn = (propsName, values, index) => {
+            const btnProps = this.props[propsName];
+            let result = true;
+            if (typeof btnProps === 'boolean') {
+                result = btnProps;
+            } else if (typeof btnProps === 'function') {
+                result = btnProps(values, index);
+            }
+
+            return result;
+        }
+
         renderRowList = () => {            
             const {
                 multiple = false,
-                hasDelete = true, hasUpdate = true,
                 itemAlign = 'left',
                 children,
                 status,
@@ -111,11 +139,16 @@ export default function bind(type, source) {
                 updateText, deleteText, saveText, cancelText,
             } = getText();
 
-
             const { formList } = repeaterCore;
             const rowList = formList.map((core, index) => {
                 const values = core.getValues();
                 const { id } = core;
+
+                const hasDelete = this.decideHasBtn('hasDelete', values, index);
+                const hasUpdate = this.decideHasBtn('hasUpdate', values, index);
+
+                console.log('hasDelete', hasDelete, index, (!focusMode || multiple));
+                console.log('hasUpdate', hasUpdate, index, !multiple && !focusMode);
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';

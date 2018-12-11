@@ -371,6 +371,12 @@ const dasyncHandler = {
     }
 };
 
+const hasDelete = (values, index) => {
+    return index > 0;
+};
+
+// const hasDelete = false;
+
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
     {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
@@ -531,7 +537,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     </If> */}
 
     <FormItem label="InlineRepeater" name="inlineRepeaterx">
-        <InlineRepeater multiple top="hello" bottom="world">
+        <InlineRepeater multiple top="hello" bottom="world" hasDelete={hasDelete}>
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
              <FormItem label="价格" multiple>
