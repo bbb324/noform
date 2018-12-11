@@ -531,7 +531,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     </If> */}
 
     <FormItem label="InlineRepeater" name="inlineRepeaterx">
-        <InlineRepeater multiple>
+        <InlineRepeater multiple top="hello" bottom="world">
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
              <FormItem label="价格" multiple>

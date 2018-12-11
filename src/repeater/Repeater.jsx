@@ -113,7 +113,6 @@ export default function bind(type, source) {
 
 
             const { formList } = repeaterCore;
-            console.log('formList', formList.length, formList);
             const rowList = formList.map((core, index) => {
                 const values = core.getValues();
                 const { id } = core;
@@ -214,6 +213,8 @@ export default function bind(type, source) {
                 operateClassName = '',
                 getText,
                 repeaterCore,
+                top,
+                bottom,
             } = this.props;
 
             const { addText, operateText } = getText();
@@ -263,11 +264,20 @@ export default function bind(type, source) {
                 </TableCom>);
             }
 
+            let topElement = null;
+            let bottomElement = null;
+            if (top && typeof top === 'function') topElement = top();
+            if (top && (React.isValidElement(top) || typeof top === 'string')) topElement = typeof top === 'string' ? <div>{top}</div> : top;
+            if (bottom && typeof bottom === 'function') bottomElement = bottom();
+            if (bottom && React.isValidElement(bottom) || typeof bottom === 'string') bottomElement = typeof bottom === 'string' ? <div>{bottom}</div> : bottom;
+
             return (<div className={`table-repeater-wrapper ${className || ''}`} style={style}>
+                {topElement}
                 {this.renderFilter()}
                 {addPosition === 'top' ? addBtnEle : null}
                 {containerContent}
                 {addPosition === 'bottom' ? addBtnEle : null}
+                {bottomElement}
             </div>);
         }
 
