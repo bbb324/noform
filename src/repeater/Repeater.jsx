@@ -147,9 +147,6 @@ export default function bind(type, source) {
                 const hasDelete = this.decideHasBtn('hasDelete', values, index);
                 const hasUpdate = this.decideHasBtn('hasUpdate', values, index);
 
-                console.log('hasDelete', hasDelete, index, (!focusMode || multiple));
-                console.log('hasUpdate', hasUpdate, index, !multiple && !focusMode);
-
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
                 const focusCls = focusMode ? 'inline-repeater-focus' : '';
